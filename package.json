@@ -30,7 +30,6 @@
   "homepage": "https://github.com/UKHomeOffice/passports-template-mixins",
   "dependencies": {
     "hogan.js": "^3.0.2",
-    "i18n-lookup": "^0.1.0",
     "moment": "^2.9.0",
     "underscore": "^1.7.0"
   },
