@@ -1,6 +1,6 @@
 {
   "name": "hmpo-template-mixins",
-  "version": "2.0.0-0",
+  "version": "2.0.0-1",
   "description": "A middleware that exposes a series of Mustache mixins on res.locals to ease usage of forms, translations, and some general needs.",
   "main": "index.js",
   "scripts": {
