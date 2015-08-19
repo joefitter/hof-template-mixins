@@ -420,7 +420,7 @@ describe('Template Mixins', function () {
             });
 
             it('adds `legendClassName` if it exists as a string or an array', function () {
-                middleware = mixins(translate, {
+                middleware = mixins({
                     'field-name-1': {
                         legend: {
                             className: 'abc def'
