@@ -1,5 +1,5 @@
 var mixins = require('../lib/template-mixins');
-
+var _ = require('underscore');
 var Hogan = require('hogan.js');
 
 function translate(key) {
@@ -699,13 +699,14 @@ describe('Template Mixins', function () {
                 });
                 middleware(req, res, next);
                 res.locals['radio-group']().call(res.locals, 'field-name');
-                render.should.have.been.calledWith(sinon.match({
-                    options: [{
+                render.should.have.been.calledWith(sinon.match(function (value) {
+                    var obj = value.options[0];
+                    return _.isMatch(obj, {
                         label: 'Foo',
                         value: 'foo',
                         selected: false,
                         toggle: undefined
-                    }]
+                    });
                 }));
             });
 
@@ -781,6 +782,18 @@ describe('Template Mixins', function () {
                 res.locals['radio-group']().call(res.locals, 'field-name');
                 render.should.have.been.calledWithExactly(sinon.match({
                     hint: null
+                }));
+            });
+
+            it('passes a function as renderChild', function () {
+                middleware = mixins({
+                    'field-name': {}
+                });
+                middleware(req, res, next);
+                res.locals['radio-group']().call(res.locals, 'field-name');
+                var renderChild = render.lastCall.args[0].renderChild;
+                render.should.have.been.calledWithExactly(sinon.match(function (value) {
+                    return typeof value.renderChild === 'function'
                 }));
             });
 
@@ -891,10 +904,14 @@ describe('Template Mixins', function () {
                 }, { translate: translate });
                 middleware(req, res, next);
                 res.locals['select']().call(res.locals, 'field-name');
-                render.should.have.been.calledWith(sinon.match({
-                    options: [
-                        { label: '', selected: false, toggle: undefined, value: '' }
-                    ]
+                render.should.have.been.calledWith(sinon.match(function (value) {
+                    var obj = value.options[0]
+                    return _.isMatch(obj, {
+                        label: '',
+                        selected: false,
+                        toggle: undefined,
+                        value: '',
+                    });
                 }));
             });
         });
