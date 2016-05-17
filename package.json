@@ -4,7 +4,8 @@
   "description": "A middleware that exposes a series of Mustache mixins on res.locals to ease usage of forms, translations, and some general needs.",
   "main": "index.js",
   "scripts": {
-    "test": "npm run lint && npm run unit",
+    "test": "npm run lint && npm run unit && npm run snyk",
+    "snyk": "snyk test",
     "lint": "eslint .",
     "unit": "mocha test/. --require ./test/helpers.js --recursive"
   },
@@ -30,14 +31,15 @@
   "homepage": "https://github.com/UKHomeOffice/passports-template-mixins",
   "dependencies": {
     "hogan.js": "^3.0.2",
-    "moment": "^2.9.0",
-    "underscore": "^1.7.0"
+    "moment": "^2.13.0",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "chai": "^2.1.0",
-    "eslint": "^0.14.1",
-    "mocha": "^2.1.0",
-    "sinon": "^1.12.2",
-    "sinon-chai": "^2.7.0"
+    "chai": "^3.5.0",
+    "eslint": "^2.10.2",
+    "mocha": "^2.4.5",
+    "sinon": "^1.17.4",
+    "sinon-chai": "^2.8.0",
+    "snyk": "^1.14.3"
   }
 }
