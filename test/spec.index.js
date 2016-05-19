@@ -99,6 +99,31 @@ describe('Template Mixins', function () {
                 }));
             });
 
+            it('should have an autocomplete setting if specified', function () {
+                middleware = mixins({
+                    'field-name': {
+                        'autocomplete': 'custom'
+                    }
+                });
+                middleware(req, res, next);
+                res.locals['input-text']().call(res.locals, 'field-name');
+                render.should.have.been.calledWith(sinon.match({
+                    autocomplete: 'custom'
+                }));
+            });
+
+            it('should default to no autocomplete attribute ', function () {
+                middleware = mixins({
+                    'field-name': {
+                    }
+                });
+                middleware(req, res, next);
+                res.locals['input-text']().call(res.locals, 'field-name');
+                render.should.have.been.calledWith(sinon.match({
+                    autocomplete: sinon.match.undefined
+                }));
+            });
+
             it('should have classes if one or more were specified against the field', function () {
                 middleware = mixins({
                     'field-name': {
@@ -356,6 +381,117 @@ describe('Template Mixins', function () {
 
                 yearCall.should.have.been.calledWith(sinon.match({
                     label: 'fields.field-name-year.label'
+                }));
+            });
+
+            it('autocomplete should have a sufix of -day -month and -year', function () {
+                var autocompletemiddleware = mixins({
+                    'field-name': {
+                        'autocomplete': 'bday'
+                    }
+                });
+                autocompletemiddleware(req, res, next);
+                res.locals['input-date']().call(res.locals, 'field-name');
+
+                render.called;
+
+                var dayCall = render.getCall(0),
+                    monthCall = render.getCall(1),
+                    yearCall = render.getCall(2);
+
+                dayCall.should.have.been.calledWith(sinon.match({
+                    autocomplete: 'bday-day'
+                }));
+
+                monthCall.should.have.been.calledWith(sinon.match({
+                    autocomplete: 'bday-month'
+                }));
+
+                yearCall.should.have.been.calledWith(sinon.match({
+                    autocomplete: 'bday-year'
+                }));
+            });
+
+            it('autocomplete should be set as exact values if an object is given', function () {
+                var autocompletemiddleware = mixins({
+                    'field-name': {
+                        'autocomplete': {
+                            day: 'day-type',
+                            month: 'month-type',
+                            year: 'year-type'
+                        }
+                    }
+                });
+                autocompletemiddleware(req, res, next);
+                res.locals['input-date']().call(res.locals, 'field-name');
+
+                render.called;
+
+                var dayCall = render.getCall(0),
+                    monthCall = render.getCall(1),
+                    yearCall = render.getCall(2);
+
+                dayCall.should.have.been.calledWith(sinon.match({
+                    autocomplete: 'day-type'
+                }));
+
+                monthCall.should.have.been.calledWith(sinon.match({
+                    autocomplete: 'month-type'
+                }));
+
+                yearCall.should.have.been.calledWith(sinon.match({
+                    autocomplete: 'year-type'
+                }));
+            });
+
+            it('autocomplete should set autocomplete to off if off is specified', function () {
+                var autocompletemiddleware = mixins({
+                    'field-name': {
+                        'autocomplete': 'off'
+                    }
+                });
+                autocompletemiddleware(req, res, next);
+                res.locals['input-date']().call(res.locals, 'field-name');
+
+                render.called;
+
+                var dayCall = render.getCall(0),
+                    monthCall = render.getCall(1),
+                    yearCall = render.getCall(2);
+
+                dayCall.should.have.been.calledWith(sinon.match({
+                    autocomplete: 'off'
+                }));
+
+                monthCall.should.have.been.calledWith(sinon.match({
+                    autocomplete: 'off'
+                }));
+
+                yearCall.should.have.been.calledWith(sinon.match({
+                    autocomplete: 'off'
+                }));
+            });
+
+            it('autocomplete should default to no attribute across all date fields', function () {
+                middleware(req, res, next);
+                res.locals['input-date']().call(res.locals, 'field-name');
+
+                render.called;
+
+                var dayCall = render.getCall(0),
+                    monthCall = render.getCall(1),
+                    yearCall = render.getCall(2);
+
+                dayCall.should.have.been.calledWith(sinon.match({
+                    autocomplete: undefined
+                }));
+
+                monthCall.should.have.been.calledWith(sinon.match({
+                    autocomplete: undefined
+                }));
+
+                yearCall.should.have.been.calledWith(sinon.match({
+                    autocomplete: undefined
                 }));
             });
 
